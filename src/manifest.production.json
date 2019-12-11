@@ -1,0 +1,10 @@
+{
+    "manifest_version": 2,
+    "name": "zj-chrome-ext",
+    "description": "zj 使用vue 开发简单的Chrome扩展程序",
+    "version": "0.0.1",
+    "options_page": "options.html",
+    "browser_action": {
+        "default_popup": "popup.html"
+    }
+}
