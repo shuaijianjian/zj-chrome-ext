@@ -1,10 +1,12 @@
 {
     "manifest_version": 2,
     "name": "zj-chrome-ext",
-    "description": "zj 使用vue 开发简单的Chrome扩展程序",
+    "description": "zj 使用vue3.0 开发简单的Chrome扩展程序",
     "version": "0.0.1",
     "options_page": "options.html",
     "browser_action": {
+        "default_icon": "./assets/icon.png",
+        "default_title": "zj 使用vue3.0 开发简单的Chrome扩展程序",
         "default_popup": "popup.html"
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
@@ -13,6 +15,9 @@
         "48": "./assets/icon.png",
         "128": "./assets/icon.png"
     },
+    "background": {
+        "page": "background.html"
+    },	
     "permissions": [
         "<all_urls>"
     ],

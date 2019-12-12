@@ -1,7 +1,6 @@
-
 <template>
   <div class="main_app">
-    <h1>Hello Background</h1>
+    <h1>Hello Options</h1>
   </div>
 </template>
 

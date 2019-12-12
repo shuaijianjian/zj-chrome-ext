@@ -8,6 +8,8 @@
       <div class="content">
         <div v-for="item in 4" :key="item" class="text item">{{'列表内容 ' + params001 }}</div>
       </div>
+      <el-button type="text" @click="openBG()">openBG</el-button>
+      <br />
       <el-button type="text" @click="clickUp()">click(+1)</el-button>
       <br />
       <el-button type="text" @click="clickDown()">click(-1)</el-button>
@@ -24,6 +26,9 @@ export default {
     };
   },
   methods: {
+    openBG() {
+      window.open(chrome.extension.getURL("background.html"));
+    },
     clickUp() {
       ++this.params001;
       console.log("=============clickUp=======================");

@@ -34,7 +34,10 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-console":"off"
+      "no-console":"off",
+      "globals": {
+        "chrome": true
+      }
     },
     "parserOptions": {
       "parser": "babel-eslint"
