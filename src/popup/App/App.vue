@@ -1,22 +1,42 @@
 <template>
-  <div class="main_app">
-    <h1>Hello popup</h1>
+  <div class="container">
+    <el-card class="card">
+      <div class="header">
+        <span>卡片名称</span>
+        <el-button type="text">操作按钮</el-button>
+      </div>
+      <div class="content">
+        <div v-for="item in 4" :key="item" class="text item">{{'列表内容 ' + item }}</div>
+      </div>
+    </el-card>
   </div>
 </template>
-
+ 
 <script>
 export default {
-  name: 'app',
-}
+  name: "app"
+};
 </script>
-
+ 
 <style>
-.main_app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.container {
+  display: flex;
+  width: 300px;
+  height: 500px;
+}
+.card {
+  flex: 1;
+}
+.header {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: 10px;
+  border-bottom-color: red;
+}
+.content {
+  flex: 1;
+  background-color: green;
 }
 </style>
