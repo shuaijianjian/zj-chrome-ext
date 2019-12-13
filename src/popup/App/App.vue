@@ -1,22 +1,39 @@
+
 <template>
   <div class="container">
-    <el-card class="card">
-      <div class="header">
-        <span>卡片名称</span>
-        <el-button type="text">操作按钮</el-button>
+    <div class="header">这是一个popup页面!!!</div>
+    <div class="content">
+      <div class="col">
+        <div class="col-left">background</div>
+        <div class="col-right">
+          <el-button size="mini" type="text" @click="openBg()">打开background</el-button>
+          <el-button size="mini" type="text" @click="callBgFun()">bug->调用bg页JS方法</el-button>
+          <el-button size="mini" type="text" @click="getBgTitle()">获取bg页的标题</el-button>
+          <el-button size="mini" type="text" @click="setBgTitle()">设置bg页标题</el-button>
+        </div>
       </div>
-      <div class="content">
-        <div v-for="item in 4" :key="item" class="text item">{{'列表内容 ' + params001 }}</div>
+      <div class="col">
+        <div class="col-left">窗口操作演示</div>
+        <div class="col-right">
+          <el-button size="mini" type="text" @click="openNewWindow()">新窗口打开百度</el-button>
+          <el-button size="mini" type="text" @click="customWindowSize()">执行简单的窗口动画</el-button>
+          <el-button size="mini" type="text" @click="maxCurrentWindow()">将当前窗口最大化</el-button>
+          <el-button size="mini" type="text" @click="minCurrentWindow()">将当前窗口最小化</el-button>
+          <el-button size="mini" type="text" @click="closeCurrentWindow()">关闭当前窗口所有标签(慎点)</el-button>
+        </div>
       </div>
-      <el-button type="text" @click="openBG()">openBG</el-button>
-      <br />
-      <el-button type="text" @click="clickUp()">click(+1)</el-button>
-      <br />
-      <el-button type="text" @click="clickDown()">click(-1)</el-button>
-    </el-card>
+      <div class="col">
+        <div class="col-left">标签操作演示</div>
+        <div class="col-right">666</div>
+      </div>
+      <div class="col">
+        <div class="col-left">DOM交互演示</div>
+        <div class="col-right">888</div>
+      </div>
+    </div>
   </div>
 </template>
- 
+
 <script>
 export default {
   name: "app",
@@ -26,16 +43,66 @@ export default {
     };
   },
   methods: {
-    openBG() {
+    // background
+    openBg() {
       window.open(chrome.extension.getURL("background.html"));
     },
-    clickUp() {
-      ++this.params001;
-      console.log("=============clickUp=======================");
+    callBgFun() {
+      const bg = chrome.extension.getBackgroundPage();
+      console.log("===========getBackgroundPage=========================");
+      console.log(bg);
+      console.log("===========getBackgroundPage=========================");
+      bg.testBackground();
     },
-    clickDown() {
-      --this.params001;
-      console.log("==============clickDown======================");
+    getBgTitle() {
+      const bg = chrome.extension.getBackgroundPage();
+      this.$message(bg.document.title);
+    },
+    setBgTitle() {
+      const bg = chrome.extension.getBackgroundPage();
+      var title = prompt("请输入background的新标题：", "这是新标题");
+      bg.document.title = title;
+    },
+    // 窗口操作演示
+    openNewWindow() {
+      chrome.windows.create({ state: "maximized" });
+    },
+    customWindowSize() {
+      chrome.windows.getCurrent({}, currentWindow => {
+        var startLeft = 10;
+
+        chrome.windows.update(currentWindow.id, {
+          left: startLeft * 10,
+          top: 100,
+          width: 800,
+          height: 600
+        });
+        var inteval = setInterval(() => {
+          if (startLeft >= 40) clearInterval(inteval);
+  
+          chrome.windows.update(currentWindow.id, { left: ++startLeft * 10 });
+        }, 100);
+      });
+    },
+    maxCurrentWindow() {
+      chrome.windows.getCurrent({}, currentWindow => {
+        // state: 可选 'minimized', 'maximized' and 'fullscreen'
+
+        chrome.windows.update(currentWindow.id, { state: "maximized" });
+      });
+    },
+    minCurrentWindow() {
+      chrome.windows.getCurrent({}, currentWindow => {
+        // state: 可选 'minimized', 'maximized' and 'fullscreen'
+
+        chrome.windows.update(currentWindow.id, { state: "minimized" });
+      });
+    },
+    closeCurrentWindow() {
+      chrome.windows.getCurrent({}, currentWindow => {
+
+        chrome.windows.remove(currentWindow.id);
+      });
     }
   }
 };
@@ -44,22 +111,37 @@ export default {
 <style>
 .container {
   display: flex;
+  flex-direction: column;
   width: 300px;
   height: 500px;
 }
-.card {
-  flex: 1;
-}
 .header {
-  height: 30px;
   display: flex;
+  height: 44px;
+  width: 100%;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  border-bottom-width: 10px;
-  border-bottom-color: red;
+  border-bottom: 0.5px solid gray;
 }
 .content {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  background-color: green;
+}
+.col {
+  display: flex;
+  border-bottom: 1px solid gray;
+}
+.col-left {
+  display: flex;
+  flex: 1;
+  background-color: cyan;
+  justify-content: center;
+  align-items: center;
+}
+.col-right {
+  /* display: flex; */
+  flex: 3;
+  background-color: yellow;
 }
 </style>
