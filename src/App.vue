@@ -13,11 +13,6 @@ export default {
   components: {
     HelloWorld
   },
-  methods: {
-    testBackground() {
-      console.log('===========testBackground=========================');
-    }
-  }
 }
 </script>
 

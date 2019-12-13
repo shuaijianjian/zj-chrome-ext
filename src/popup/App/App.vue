@@ -24,11 +24,19 @@
       </div>
       <div class="col">
         <div class="col-left">标签操作演示</div>
-        <div class="col-right">666</div>
+        <div class="col-right">
+          <el-button size="mini" type="text" @click="openUrlNewTab()">新标签打开百度</el-button>
+          <el-button size="mini" type="text" @click="openUrlCurrentTab()">当前标签打开网页</el-button>
+          <el-button size="mini" type="text" @click="getCurrentTabId()">获取当前标签页ID</el-button>
+          <el-button size="mini" type="text" @click="highlightTab()">切换到第一个标签</el-button>
+        </div>
       </div>
       <div class="col">
-        <div class="col-left">DOM交互演示</div>
-        <div class="col-right">888</div>
+        <div class="col-left">popup与content-script交互</div>
+        <div class="col-right">
+          <el-button size="mini" type="text" @click="sendMsgToContent()">短连接发送消息到content-script</el-button>
+          <el-button size="mini" type="text" @click="connectToContent()">长连接发送消息到content-script</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -79,7 +87,7 @@ export default {
         });
         var inteval = setInterval(() => {
           if (startLeft >= 40) clearInterval(inteval);
-  
+
           chrome.windows.update(currentWindow.id, { left: ++startLeft * 10 });
         }, 100);
       });
@@ -100,8 +108,54 @@ export default {
     },
     closeCurrentWindow() {
       chrome.windows.getCurrent({}, currentWindow => {
-
         chrome.windows.remove(currentWindow.id);
+      });
+    },
+    // 标签操作演示
+    openUrlNewTab() {
+      chrome.tabs.create({ url: "https://www.baidu.com" });
+    },
+    openUrlCurrentTab() {
+      this.getTab(tabId => {
+        chrome.tabs.update(tabId, { url: "http://www.so.com" });
+      });
+    },
+    getCurrentTabId() {
+      this.getTab(tabId => {
+        this.$message("获取当前标签ID ==>  " + tabId);
+      });
+    },
+    highlightTab() {
+      chrome.tabs.highlight({ tabs: 0 });
+    },
+
+    // popup与content-script交互
+    sendMsgToContent() {
+      this.sendMessageToContentScript("你好，我是popup！", response => {
+        if (response) {
+          this.$message("收到来自content-script的回复： " + response);
+        }
+      });
+    },
+    connectToContent() {
+      console.log("===========connectToContent=========================");
+    },
+    // 获取当前选项卡ID
+    getTab(callback) {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        if (callback) {
+          callback(tabs.length ? tabs[0].id : null);
+        }
+      });
+    },
+    sendMessageToContentScript(message, callback) {
+      this.getTab(tabId => {
+        console.log('==============tabId======================');
+        console.log(tabId);
+        console.log('==============tabId======================');
+        chrome.runtime.sendMessage(tabId, message, function(response) {
+          if (callback) callback(response);
+        });
       });
     }
   }

@@ -6,13 +6,18 @@
 
 <script>
 export default {
-  name: 'app',
-}
+  name: "app",
+  methods: {
+    testBackground() {
+      console.log("===========testBackground=========================");
+    }
+  }
+};
 </script>
 
 <style>
 .main_app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

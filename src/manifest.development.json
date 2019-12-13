@@ -17,14 +17,14 @@
     },
     "background": {
         "page": "background.html"
-    },	
+    },
     "permissions": [
         "<all_urls>"
     ],
     "content_scripts": [
         {
             "matches": [
-                "*://*.baidu.com/*"
+                "<all_urls>"
             ],
             "js": [
                 "js/content.js"
